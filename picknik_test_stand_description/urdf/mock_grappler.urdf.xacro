@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <xacro:macro name="mock_grappler" params="
+    prefix 
+    parent"
+  >
+
+    <!-- Constants -->
+    <xacro:property name="x_origin" value="${pi/2.0}" />
+    <xacro:property name="y_origin" value="0.0" />
+    <xacro:property name="z_origin" value="${pi/2.0}" />
+
+    <!-- Description -->
+    <link
+      name="${prefix}base_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://picknik_test_stand_description/meshes/mock_grappler_visual.stl" />
+        </geometry>
+        <material name="silver" />
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://picknik_test_stand_description/meshes/mock_grappler_collision.stl" />
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${parent}_to_${prefix}base_link" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}base_link"/>
+      <origin xyz="0 0 0" rpy="${x_origin} ${y_origin} ${z_origin}"/>
+    </joint>
+    
+  </xacro:macro>
+</robot>

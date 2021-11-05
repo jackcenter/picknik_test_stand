@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="wall" params="
+      prefix
+      parent
+      mount_xyz
+      mount_rpy"
+  >
+
+    <!-- Constants -->
+    <xacro:property name="x_size" value="2.0" />
+    <xacro:property name="y_size" value="2.5" />
+    <xacro:property name="z_size" value="0.025" />
+
+    <xacro:property name="x_origin" value="0.0" />
+    <xacro:property name="y_origin" value="-1.25" />
+    <xacro:property name="z_origin" value="0.0125" />
+
+    <link name="${prefix}base_link" >
+      <visual>
+        <geometry>
+          <box size="${x_size} ${y_size} ${z_size}" />
+        </geometry>
+        <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
+        <material name="burgandy" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${x_size} ${y_size} ${z_size}" />
+        </geometry>
+        <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
+      </collision>
+    </link>
+
+    <joint name="${parent}_to_${prefix}base_link" type="fixed" >
+      <parent link="${parent}" />
+      <child link="${prefix}base_link" />
+      <origin xyz="${mount_xyz}" rpy="${mount_rpy}" />
+    </joint>
+    
+  </xacro:macro>
+
+</robot>

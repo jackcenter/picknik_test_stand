@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_description_file" default="$(find picknik_test_stand_description)/launch/picknik_test_stand_description.launch" />
+  
+  <include file="$(arg robot_description_file)"/>
+
+  <!-- The semantic description that corresponds to the URDF -->
+  <param name="robot_description_semantic" command="$(find xacro)/xacro '$(find picknik_test_stand_description)/config/picknik_test_stand.srdf.xacro'" />
+
+  <!-- Simulate robot states -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+    <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
+  </node> 
+
+  <!-- Launch Rviz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_description)/config/picknik_test_stand.rviz" required="true" />
+
+</launch>

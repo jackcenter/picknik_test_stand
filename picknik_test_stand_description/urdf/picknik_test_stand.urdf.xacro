@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<robot name="picknik_test_stand" xmlns:xacro="http://ros.org/wiki/xacro">
+
+<!-- Include all macros -->
+  <xacro:include filename="$(find ur_description)/urdf/inc/ur5_macro.xacro" />
+  <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/materials.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/bench.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/wall.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/mock_grappler.urdf.xacro" />
+  
+<!-- Constants -->
+  <xacro:property name="yaml_file" value="$(find picknik_test_stand/config/picknik_test_stand.yaml" />
+  <xacro:property name="properties" value="${load_yaml(yaml_file)}" />
+  <xacro:property name="arm_height" value="0.92" />
+  <xacro:property name="camera_calibration_file" value="$(find picknik_test_stand_description)/config/camera_calibration.yaml" />
+  <xacro:property name="camera_calibration" value="${load_yaml(camera_calibration_file)}" />
+
+  <xacro:property name="seg0_prefix" value="seg0_" />
+
+<!-- Parameters -->
+  <xacro:arg name="joint_limit_params" default=""/>
+  <xacro:arg name="kinematics_params" default=""/>
+  <xacro:arg name="physical_params" default=""/>
+  <xacro:arg name="visual_params" default=""/>
+  <!-- legal values:
+        - hardware_interface/PositionJointInterface
+        - hardware_interface/VelocityJointInterface
+        - hardware_interface/EffortJointInterface
+  -->
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+  <xacro:arg name="safety_limits" default="false"/>
+  <xacro:arg name="safety_pos_margin" default="0.15"/>
+  <xacro:arg name="safety_k_position" default="20"/>
+
+<!-- Build the scence -->
+
+  <!-- Common materials -->
+  <xacro:materials />
+
+  <!-- Create the base link at the orgin of the scene -->
+  <link name="tractor_base" />
+
+  <!-- Load the work bench and attach to the base link -->
+  <xacro:bench parent="tractor_base" prefix="bench_" />
+  
+  <!-- Load the imaginary safety wall and attach to the work bench -->
+  <xacro:wall parent="bench_base_link" prefix="wall_" mount_xyz="0.0 -0.51 0.0" mount_rpy="-1.5708 0.0 0.0"/>
+  
+  <!-- Load the UR5 -->
+  <xacro:ur5_robot 
+    prefix="${seg0_prefix}"
+    joint_limits_parameters_file="$(arg joint_limit_params)"
+    kinematics_parameters_file="$(arg kinematics_params)"
+    physical_parameters_file="$(arg physical_params)"
+    visual_parameters_file="$(arg visual_params)"
+    transmission_hw_interface="$(arg transmission_hw_interface)"
+    safety_limits="$(arg safety_limits)"
+    safety_pos_margin="$(arg safety_pos_margin)"
+    safety_k_position="$(arg safety_k_position)"/>    
+  
+  <!-- Attach the UR5 to the work bench -->
+  <joint name="bench_to_ur5_robot" type="fixed" >
+    <parent link="bench_base_link" />
+    <child link="${seg0_prefix}base_link" />
+    <origin xyz="0.0 0.0 ${arm_height}" rpy="0.0 0.0 0.0" />
+  </joint>
+
+  <!-- Load the mock grappler and attach to the UR5 flange -->
+  <xacro:mock_grappler parent="${seg0_prefix}flange" prefix="grappler_" />
+
+  <!-- Load a D415 RealSense camera and attach to mock grappler -->
+  <xacro:sensor_d415 parent="grappler_base_link" use_nominal_extrinsics="true" use_mesh="true">
+    <origin xyz="${camera_calibration['arm_camera']['xyz']}" rpy="${camera_calibration['arm_camera']['rpy']}" />
+  </xacro:sensor_d415>
+
+</robot>

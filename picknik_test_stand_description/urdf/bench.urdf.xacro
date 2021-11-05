@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="bench" params="
+      prefix
+      parent"
+  >
+
+    <!-- Constants -->
+    <xacro:property name="x_size" value="1.17" />
+    <xacro:property name="y_size" value="0.62" />
+    <xacro:property name="z_size" value="0.92" />
+
+    <xacro:property name="x_origin" value="-0.465" />
+    <xacro:property name="y_origin" value="-0.175" />
+    <xacro:property name="z_origin" value="0.46" />
+
+    <!-- Description -->
+    <link name="${prefix}base_link" >
+      <visual>
+        <geometry>
+          <box size="${x_size} ${y_size} ${z_size}" />
+        </geometry>
+        <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
+        <material name="grey" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${x_size} ${y_size} ${z_size}" />
+        </geometry>
+        <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
+      </collision>
+    </link>
+
+    <joint name="${parent}_to_${prefix}base_link" type="fixed" >
+      <parent link="${parent}" />
+      <child link="${prefix}base_link" />
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </joint>
+    
+  </xacro:macro>
+
+</robot>

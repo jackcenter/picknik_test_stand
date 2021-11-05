@@ -1,0 +1,27 @@
+---
+bench:
+  x_size:   1.17
+  y_size:   0.62
+  z_size:   0.92
+  x_origin: -0.465
+  y_origin: -0.175
+  z_origin: -0.46
+
+arm:
+  x_mount:  0.0
+  y_mount:  0.0
+  z_mount:  0.92
+
+safety_wall:
+  x_size:   2.0
+  y_size:   2.5
+  z_size:   0.025
+  x_origin: 0.0
+  y_origin: -1.25
+  z_origin: 0.0125
+  x_mount:  0.0  
+  y_mount:  -0.51
+  z_mount:  -0.92
+  r_mount:  -1.5708
+  p_mount:  0.0
+  y_mount:  0.0

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="materials" >
+
+    <material name="grey">
+        <color rgba="0.3 0.3 0.3 0.8" />
+    </material>
+
+    <material name="burgandy">
+      <color rgba="0.502 0.0 0.125 0.4" />
+    </material>
+
+    <material name="silver">
+      <color rgba="0.75 0.75 0.75 1.0" />
+    </material>
+
+  </xacro:macro>
+
+</robot>

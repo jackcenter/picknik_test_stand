@@ -8,7 +8,7 @@
 
     <!-- Constants -->
     <xacro:property name="x_origin" value="${pi/2.0}" />
-    <xacro:property name="y_origin" value="0.0" />
+    <xacro:property name="y_origin" value="${pi}" />
     <xacro:property name="z_origin" value="${pi/2.0}" />
 
     <!-- Description -->

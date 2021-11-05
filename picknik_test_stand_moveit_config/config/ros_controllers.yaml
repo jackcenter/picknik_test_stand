@@ -9,12 +9,12 @@ generic_hw_control_loop:
 # Settings for ros_control hardware interface
 hardware_interface:
   joints:
-    - seg0_shoulder_pan_joint
-    - seg0_shoulder_lift_joint
-    - seg0_elbow_joint
-    - seg0_wrist_1_joint
-    - seg0_wrist_2_joint
-    - seg0_wrist_3_joint
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint
   sim_control_mode: 1  # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
@@ -26,9 +26,9 @@ controller_list:
   action_ns: follow_joint_trajectory
   type: FollowJointTrajectory
   joints:
-    - seg0_shoulder_pan_joint
-    - seg0_shoulder_lift_joint
-    - seg0_elbow_joint
-    - seg0_wrist_1_joint
-    - seg0_wrist_2_joint
-    - seg0_wrist_3_joint
+    - shoulder_pan_joint
+    - shoulder_lift_joint
+    - elbow_joint
+    - wrist_1_joint
+    - wrist_2_joint
+    - wrist_3_joint

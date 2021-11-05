@@ -16,7 +16,7 @@
   <xacro:property name="camera_calibration_file" value="$(find picknik_test_stand_description)/config/camera_calibration.yaml" />
   <xacro:property name="camera_calibration" value="${load_yaml(camera_calibration_file)}" />
 
-  <xacro:property name="seg0_prefix" value="seg0_" />
+  <xacro:property name="seg0_prefix" value="" />
 
 <!-- Parameters -->
   <xacro:arg name="joint_limit_params" default=""/>

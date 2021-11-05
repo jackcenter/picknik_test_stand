@@ -1,12 +1,12 @@
 controller_list:
   - name: fake_manipulator_controller
     joints:
-      - seg0_shoulder_pan_joint
-      - seg0_shoulder_lift_joint
-      - seg0_elbow_joint
-      - seg0_wrist_1_joint
-      - seg0_wrist_2_joint
-      - seg0_wrist_3_joint
+      - shoulder_pan_joint
+      - shoulder_lift_joint
+      - elbow_joint
+      - wrist_1_joint
+      - wrist_2_joint
+      - wrist_3_joint
   - name: fake_endeffector_controller
     joints:
       []

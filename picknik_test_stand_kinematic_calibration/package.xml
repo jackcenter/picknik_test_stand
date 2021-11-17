@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ur5_calibration</name>
+  <name>picknik_test_stand_kinematic_calibration</name>
   <version>0.0.0</version>
-  <description>The ur5_calibration package</description>
+  <description>The picknik test stand calibration package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

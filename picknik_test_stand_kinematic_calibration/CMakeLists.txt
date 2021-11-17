@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(ur5_calibration)
+project(picknik_test_stand_kinematic_calibration)
 
 find_package(catkin REQUIRED COMPONENTS backward_ros)
 

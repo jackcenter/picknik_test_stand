@@ -1,12 +1,12 @@
 verbose: true
 base_link: tractor_base
 models:
-  - name: manipulator            
+  - name: arm            
     type: chain
     frame: wrist_3_link
   - name: camera
     type: camera3d        
-    frame: camera_color_frame  
+    frame: camera_color_optical_frame  
     topic: /camera/depth/color/points 
 free_params:
   - shoulder_pan_joint
@@ -25,24 +25,24 @@ free_frames:
     yaw: true
   - name: checkerboard
     x: true
-    y: false
+    y: true
     z: true
-    roll: false
+    roll: true
     pitch: true
-    yaw: false
-# free_frames_initial_values:
-#  - name: checkerboard
-#    x: 0.0918467
-#    y: -0.802267
-#    z: 0.73784
-#    roll: -1.74677
-#    pitch: 1.40228
-#    yaw: 2.65126
+    yaw: true
+free_frames_initial_values:
+ - name: checkerboard
+   x: 0.172357
+   y: -0.114575
+   z: -0.0130403
+   roll: -3.07854
+   pitch: 0.0277346
+   yaw: 3.13444
 error_blocks:
  - name: hand_eye
    type: chain3d_to_chain3d
    model_a: camera
-   model_b: manipulator
+   model_b: arm
  - name: restrict_camera
    type: outrageous
    param: camera_color_joint

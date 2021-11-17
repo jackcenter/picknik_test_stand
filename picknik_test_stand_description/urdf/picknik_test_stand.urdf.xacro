@@ -85,7 +85,7 @@
     <xacro:calibration_plate parent="${seg0_prefix}flange" prefix="plate_" />
 
     <xacro:sensor_l515 parent="bench_base_link" use_nominal_extrinsics="true" use_mesh="true">
-      <origin xyz="-1.3 -0.09 0.38" rpy="0 0 0"/>
+      <origin xyz="${camera_calibration['calibration_camera']['xyz']}" rpy="${camera_calibration['calibration_camera']['rpy']}"/>
     </xacro:sensor_l515>
   </xacro:if>
 

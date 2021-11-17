@@ -37,7 +37,9 @@
   </group>
 
   <!-- The semantic description that corresponds to the URDF -->
-  <param name="robot_description_semantic" command="$(find xacro)/xacro '$(find picknik_test_stand_description)/config/picknik_test_stand.srdf.xacro'" />
+  <param name="robot_description_semantic" command="$(find xacro)/xacro '$(find picknik_test_stand_description)/config/picknik_test_stand.srdf.xacro'
+    end_effector:=$(arg end_effector)" 
+  />
 
   <!-- Launch MoveIt -->
   <include file="$(find picknik_test_stand_moveit_config)/launch/picknik_test_stand_moveit.launch" >

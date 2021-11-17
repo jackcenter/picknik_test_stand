@@ -1,12 +1,16 @@
 <launch>
   <arg name="robot_ip" default="10.6.1.140" />
-  <arg name="robot_description_file" default="$(find picknik_test_stand_description)/launch/picknik_test_stand_description.launch" />
   <arg name="simulate" default="true" />
+  <arg name="end_effector" default="mock_grappler" />
+  <arg name="robot_description_file" default="$(find picknik_test_stand_description)/launch/picknik_test_stand_description.launch" />
 
   <!-- Simulation settings -->
   <group if="$(arg simulate)" >
 
-    <include file="$(arg robot_description_file)"/>
+    <include file="$(arg robot_description_file)" >
+      <arg name="end_effector" value="$(arg end_effector)" />
+    </include>
+
     <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
 
     <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >

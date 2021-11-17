@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="calibration_plate" params="
+      prefix
+      parent"
+  >
+
+    <!-- Constants -->
+    <xacro:property name="x_size" value="0.292" />
+    <xacro:property name="y_size" value="0.229" />
+    <xacro:property name="z_size" value="0.013" />
+
+    <xacro:property name="x_origin" value="0.0" />
+    <xacro:property name="y_origin" value="0.0" />
+    <xacro:property name="z_origin" value="0.0065" />
+
+    <xacro:property name="x_mount" value="0.106" />
+    <xacro:property name="y_mount" value="-0.0745" />
+    <xacro:property name="z_mount" value="0.0" />
+
+    <link name="${prefix}base_link" >
+      <visual>
+        <geometry>
+          <box size="${x_size} ${y_size} ${z_size}" />
+        </geometry>
+        <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
+        <material name="brown" />
+      </visual>
+      <collision>
+        <geometry>
+          <box size="${x_size} ${y_size} ${z_size}" />
+        </geometry>
+        <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
+      </collision>
+    </link>
+
+    <joint name="${parent}_to_${prefix}base_link" type="fixed" >
+      <parent link="${parent}" />
+      <child link="${prefix}base_link" />
+      <origin xyz="${x_mount} ${y_mount} ${z_mount}" rpy="0.0 0.0 0.0" />
+    </joint>
+    
+  </xacro:macro>
+
+</robot>

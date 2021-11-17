@@ -10,6 +10,8 @@
   <arg name="safety_limits" default="false" doc="If True, enable the safety limits controller"/>
   <arg name="safety_pos_margin" default="0.15" doc="The lower/upper limits in the safety controller" />
   <arg name="safety_k_position" default="20" doc="Used to set k position in the safety controller" />
+  <!-- end effector selection -->
+  <arg name="end_effector" default="none" doc="Used to set the end effector tool" />
 
   <param name="robot_description" command="$(find xacro)/xacro '$(find picknik_test_stand_description)/urdf/picknik_test_stand.urdf.xacro'
     joint_limit_params:=$(arg joint_limit_params)
@@ -19,6 +21,7 @@
     transmission_hw_interface:=$(arg transmission_hw_interface)
     safety_limits:=$(arg safety_limits)
     safety_pos_margin:=$(arg safety_pos_margin)
-    safety_k_position:=$(arg safety_k_position)"
+    safety_k_position:=$(arg safety_k_position)
+    end_effector:=$(arg end_effector)"
   />
 </launch>

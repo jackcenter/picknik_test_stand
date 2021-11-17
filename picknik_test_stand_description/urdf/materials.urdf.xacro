@@ -3,12 +3,16 @@
 
   <xacro:macro name="materials" >
 
-    <material name="grey">
-        <color rgba="0.3 0.3 0.3 0.8" />
-    </material>
-
     <material name="burgandy">
       <color rgba="0.502 0.0 0.125 0.4" />
+    </material>
+
+    <material name="brown">
+      <color rgba="0.55 0.35 0.17 1" />
+    </material>
+
+    <material name="grey">
+        <color rgba="0.3 0.3 0.3 0.8" />
     </material>
 
     <material name="silver">

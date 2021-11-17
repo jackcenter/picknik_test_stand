@@ -8,10 +8,9 @@
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/bench.urdf.xacro" />
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/wall.urdf.xacro" />
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/mock_grappler.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/calibration_plate.urdf.xacro" />
   
 <!-- Constants -->
-  <xacro:property name="yaml_file" value="$(find picknik_test_stand/config/picknik_test_stand.yaml" />
-  <xacro:property name="properties" value="${load_yaml(yaml_file)}" />
   <xacro:property name="arm_height" value="0.92" />
   <xacro:property name="camera_calibration_file" value="$(find picknik_test_stand_description)/config/camera_calibration.yaml" />
   <xacro:property name="camera_calibration" value="${load_yaml(camera_calibration_file)}" />
@@ -32,13 +31,16 @@
   <xacro:arg name="safety_limits" default="false"/>
   <xacro:arg name="safety_pos_margin" default="0.15"/>
   <xacro:arg name="safety_k_position" default="20"/>
+  <xacro:arg name="end_effector" default="none" />
+  <!-- Note: converting this to property so if statement can be used later, not sure of a better way to do this -->
+  <xacro:property name="end_effector" value="$(arg end_effector)" />   
 
 <!-- Build the scence -->
 
   <!-- Common materials -->
   <xacro:materials />
 
-  <!-- Create the base link at the orgin of the scene -->
+  <!-- Create the simulated base link at the orgin of the scene -->
   <link name="tractor_base" />
 
   <!-- Load the work bench and attach to the base link -->
@@ -66,12 +68,20 @@
     <origin xyz="0.0 0.0 ${arm_height}" rpy="0.0 0.0 0.0" />
   </joint>
 
-  <!-- Load the mock grappler and attach to the UR5 flange -->
-  <xacro:mock_grappler parent="${seg0_prefix}flange" prefix="grappler_" />
+  <!-- Load the selected end effector -->
+  <xacro:if value="${end_effector == 'mock_grappler'}" >
+    <!-- Load the mock grappler and attach to the UR5 flange -->
+    <xacro:mock_grappler parent="${seg0_prefix}flange" prefix="grappler_" />
 
-  <!-- Load a D415 RealSense camera and attach to mock grappler -->
-  <xacro:sensor_d415 parent="grappler_base_link" use_nominal_extrinsics="true" use_mesh="true">
-    <origin xyz="${camera_calibration['arm_camera']['xyz']}" rpy="${camera_calibration['arm_camera']['rpy']}" />
-  </xacro:sensor_d415>
+    <!-- Load a D415 RealSense camera and attach to mock grappler -->
+    <xacro:sensor_d415 parent="grappler_base_link" use_nominal_extrinsics="true" use_mesh="true">
+      <origin xyz="${camera_calibration['arm_camera']['xyz']}" rpy="${camera_calibration['arm_camera']['rpy']}" />
+    </xacro:sensor_d415>
+  </xacro:if> 
+
+  <xacro:if value="${end_effector == 'calibration_plate'}" >
+    <!-- Load the calibration plate and attach to the UR5 flange -->
+    <xacro:calibration_plate parent="${seg0_prefix}flange" prefix="plate_" />
+  </xacro:if>
 
 </robot>

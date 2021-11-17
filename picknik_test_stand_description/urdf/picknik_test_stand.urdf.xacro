@@ -48,7 +48,8 @@
   <xacro:bench parent="tractor_base" prefix="bench_" />
   
   <!-- Load the imaginary safety wall and attach to the work bench -->
-  <xacro:wall parent="bench_base_link" prefix="wall_" mount_xyz="0.0 -0.51 0.0" mount_rpy="-1.5708 0.0 0.0"/>
+  <xacro:wall parent="bench_base_link" prefix="wall0_" mount_xyz="0.0 -0.51 0.0" mount_rpy="-1.5708 0.0 0.0"/>
+  <xacro:wall parent="bench_base_link" prefix="wall1_" mount_xyz="0.5 0.0 0.0" mount_rpy="-1.5708 0.0 -1.5708"/>
   
   <!-- Load the UR5 -->
   <xacro:ur5_robot 

@@ -40,10 +40,16 @@
   <param name="robot_description_semantic" command="$(find xacro)/xacro '$(find picknik_test_stand_description)/config/picknik_test_stand.srdf.xacro'" />
 
   <!-- Launch MoveIt -->
-  <include file="$(find picknik_test_stand_bringup)/launch/picknik_test_stand_moveit.launch" >
+  <include file="$(find picknik_test_stand_moveit_config)/launch/picknik_test_stand_moveit.launch" >
     <arg name="simulate" value="$(arg simulate)" />
   </include>
 
   <!-- Launch RViz -->
-  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup.rviz" required="true" />
+  <group if="$(arg simulate)" >
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_simulation.rviz" required="true" />
+  </group>
+
+  <group unless="$(arg simulate)" >
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_hardware.rviz" required="true" />
+  </group>
 </launch>

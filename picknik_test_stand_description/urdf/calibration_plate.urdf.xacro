@@ -15,9 +15,9 @@
     <xacro:property name="y_origin" value="-0.0745" />
     <xacro:property name="z_origin" value="0.0065" />
 
-    <xacro:property name="r_mount" value="0.0" />
-    <xacro:property name="p_mount" value="${pi/2}" />
-    <xacro:property name="y_mount" value="0.0" />
+    <xacro:property name="r_mount" value="${pi/2}" />
+    <xacro:property name="p_mount" value="0.0" />
+    <xacro:property name="y_mount" value="${pi/2}" />
 
     <link name="${prefix}base_link" >
       <visual>

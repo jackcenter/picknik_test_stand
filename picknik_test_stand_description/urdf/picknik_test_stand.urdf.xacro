@@ -3,7 +3,8 @@
 
 <!-- Include all macros -->
   <xacro:include filename="$(find ur_description)/urdf/inc/ur5_macro.xacro" />
-  <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/_d415.urdf.xacro" />
+  <xacro:include filename="$(find picknik_test_stand_description)/urdf/_l515.urdf.xacro" />
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/materials.urdf.xacro" />
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/bench.urdf.xacro" />
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/wall.urdf.xacro" />
@@ -82,6 +83,10 @@
   <xacro:if value="${end_effector == 'calibration_plate'}" >
     <!-- Load the calibration plate and attach to the UR5 flange -->
     <xacro:calibration_plate parent="${seg0_prefix}flange" prefix="plate_" />
+
+    <xacro:sensor_l515 parent="bench_base_link" use_nominal_extrinsics="true" use_mesh="true">
+      <origin xyz="-1.3 -0.09 0.38" rpy="0 0 0"/>
+    </xacro:sensor_l515>
   </xacro:if>
 
 </robot>

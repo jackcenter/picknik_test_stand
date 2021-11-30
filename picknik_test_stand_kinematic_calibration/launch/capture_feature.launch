@@ -1,15 +1,12 @@
 <launch>
-  <arg name="bag_filename" default="$(find picknik_test_stand_kinematic_calibration)/bagfiles/test.bag" />
 
   <rosparam command="delete" param="robot_calibration" />
-  <node pkg="robot_calibration" type="calibrate" name="robot_calibration"
+  <node pkg="robot_calibration" type="capture_features" name="robot_calibration"
         args="--manual"
         output="screen" >
     <rosparam file="$(find picknik_test_stand_kinematic_calibration)/config/capture_checkerboards.yaml" command="load" />
     <rosparam file="$(find picknik_test_stand_kinematic_calibration)/config/calibrate.yaml" command="load" />
-    <rosparam>
-      bag_filename: "$(arg bag_filename)"
-    </rosparam>
+    <param name="bag_filename" value="$(find picknik_test_stand_kinematic_calibration)/bagfiles/test.bag" />
   </node>
   
 </launch>

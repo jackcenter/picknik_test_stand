@@ -1,0 +1,44 @@
+verbose: true
+base_link: tractor_base
+models:
+  - name: arm            
+    type: chain
+    frame: wrist_3_link
+  - name: camera
+    type: camera3d        
+    frame: camera_color_optical_frame  
+    topic: /camera/depth/color/points 
+free_frames:
+  - name: camera_color_joint
+    x: true
+    y: true
+    z: true
+    roll: true
+    pitch: true
+    yaw: true
+  - name: checkerboard
+    x: true
+    y: true
+    z: true
+    roll: true
+    pitch: true
+    yaw: true
+free_frames_initial_values:
+ - name: checkerboard
+   x: 0.172357
+   y: -0.114575
+   z: -0.0130403
+   roll: -3.07854
+   pitch: 0.0277346
+   yaw: 3.13444
+error_blocks:
+ - name: hand_eye
+   type: chain3d_to_chain3d
+   model_a: camera
+   model_b: arm
+ - name: restrict_camera
+   type: outrageous
+   param: camera_color_joint
+   joint_scale: 0.0
+   position_scale: 0.1
+   rotation_scale: 0.1

@@ -12,4 +12,4 @@ controller_list:
       []
 initial:  # Define initial robot poses.
   - group: manipulator
-    pose: home
+    pose: up

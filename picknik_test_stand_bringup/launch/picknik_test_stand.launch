@@ -2,6 +2,7 @@
   <arg name="robot_ip" default="10.6.1.140" />
   <arg name="simulate" default="true" />
   <arg name="end_effector" default="mock_grappler" />
+  <arg name="open_rviz" default="true" />
   <arg name="robot_description_file" default="$(find picknik_test_stand_description)/launch/picknik_test_stand_description.launch" />
 
   <!-- Simulation settings -->
@@ -48,11 +49,13 @@
   </include>
 
   <!-- Launch RViz -->
-  <group if="$(arg simulate)" >
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_simulation.rviz" required="true" />
-  </group>
+  <group if="$(arg open_rviz)" />
+    <group if="$(arg simulate)" >
+      <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_simulation.rviz" required="true" />
+    </group>
 
-  <group unless="$(arg simulate)" >
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_hardware.rviz" required="true" />
+    <group unless="$(arg simulate)" >
+      <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_hardware.rviz" required="true" />
+    </group>
   </group>
 </launch>

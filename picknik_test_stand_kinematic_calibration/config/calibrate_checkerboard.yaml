@@ -1,5 +1,5 @@
 verbose: true
-base_link: tractor_base
+base_link: bench_base_link
 models:
   - name: arm            
     type: chain

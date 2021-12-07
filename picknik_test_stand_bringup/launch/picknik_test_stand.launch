@@ -49,7 +49,7 @@
   </include>
 
   <!-- Launch RViz -->
-  <group if="$(arg open_rviz)" />
+  <group if="$(arg open_rviz)" >
     <group if="$(arg simulate)" >
       <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_bringup)/config/picknik_test_stand_bringup_simulation.rviz" required="true" />
     </group>

@@ -29,7 +29,7 @@ Download the workspace dependencies. Currently I need to change `realsense-ros/r
 
 ```bash
 cd $TESTSTAND_WS
-wstool merge -t src src/picknik_test_stand.gi/upstream.repos
+wstool merge -t src src/picknik_test_stand/upstream.repos
 wstool update -t src
 ```
 

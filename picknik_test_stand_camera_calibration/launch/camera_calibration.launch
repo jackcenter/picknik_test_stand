@@ -1,0 +1,16 @@
+<launch>
+  <arg name="robot_ip" default="10.6.1.140" />
+  <arg name="simulate" default="false" />
+  <arg name="end_effector" default="mock_grappler" />
+
+  <!-- Launch the Test Stand -->
+  <include file="$(find picknik_test_stand_bringup)/launch/picknik_test_stand.launch" >
+    <arg name="robot_ip" value="$(arg robot_ip)" />
+    <arg name="simulate" value="$(arg simulate)" />
+    <arg name="end_effector" default="$(arg end_effector)" />
+    <arg name="open_rviz" value="false" />
+  </include>
+
+  <!-- Launch RViz -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find picknik_test_stand_camera_calibration)/config/picknik_test_stand_camera_calibration_hardware.rviz" required="true" />
+</launch>

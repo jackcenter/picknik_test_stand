@@ -2,34 +2,28 @@
 These instructions were developed specifically for the UR5 as a template to follow for a generic robot. The calibration is based on the [robot_calibration](https://github.com/mikeferguson/robot_calibration) package by Mike Fergusion which was used for the Fetch Robot in the [fetch_calibration](https://github.com/fetchrobotics/fetch_ros/tree/indigo-devel/fetch_calibration) package which contains examples of its use. This package offers a ROS node to calibrate joint angle and robot frame offsets and store them in an updated URDF. To use the package, the following steps will need to be completed.
 
 # Install the workspace
-Running the calibration on the UR5 requires the drivers for the arm (Universal_Robots_ROS_Driver), the description of the arm (fmauch_universal_robot), the description of the camera used (realsense-ros), and the calibration package (robot_calibration). Specific packages used for a generic robot will differ, but generally a method to bring up the arm and 3D camera is required.
+Running the calibration on the PickNik test stand requires the drivers for the arm (Universal_Robots_ROS_Driver), the description of the arm (fmauch_universal_robot), the description of the camera used (realsense-ros), and the calibration package (robot_calibration). Specific packages used for a generic robot will differ, but generally a method to bring up the arm and 3D camera is required. For instructions on how to install the PickNik_Test_Stand workspace, see the associated readme.
 
-As an example, the ur5_calibration package can be created by executing the following.
-1. Create the workspace directory
+# Quick Start
+The two parts of this package, capture and calibration, are run separately. This requires running two node: capture_features and optimize_parameters. 
+
+To run the **capture features** node, use the follwoing command:
 
 ```bash
-export CALIB_WS=~/ws_calibration
-mkdir -p $CALIB_WS/src
+roslaunch picknik_test_stand_kinematic_calibration capture_checkerboard.launch rosbag_name:=bagfiles/test.bag
 ```
-2. Initialize the workspace
+Available arguments include:
+- rosbag_name: the local path to the location where the rosbag file should be saved.
+
+To run the **optimize parameters** node, a rosbag file with calibration data will be required. This is obtain by running the capture features node.
+
 ```bash
-cd $CALIB_WS
-wstool init src
-cd src
-git clone https://github.com/jackcenter/ur5_calibration.git
+roslaunch picknik_test_stand_kinematic_calibration optimize_parameters.launch rosbag_name:=bagfiles/test.bag
 ```
-3. Merge in required workspaces
-```bash
-cd $CALIB_WS
-wstool merge -t src src/ur5_calibration/upstreams.repos
-wstool update -t src
-rosdep install --from-paths src --ignore-src --rosdistro ${ROS_DISTRO} -r -y
-```
-4. Build the package
-```bash
-catkin config --extend /opt/ros/${ROS_DISTRO} --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17
-catkin build
-```
+Available arguments include:
+- rosbag_name: the local path to the location where the rosbag file should be loaded.
+- verbose: level of output to print to the screen from the optimizer.
+
 
 # Setup the calibration
 ## Create a launch file for bringing up the calibration environment.
@@ -85,6 +79,7 @@ features:
     points_y: 4                                   # Number of inner edges on the calibration checkerboard (y celss minus 1)
     square_size: 0.035                            # Edge length of a single checkerboard cell
 ```
+
 ## Generate a configuration optimization configuration file
 
 Create another new file: `config/calibrate.yaml`. This file specifies which joints will be optimized. It helps to have the camera and checkerboard positions well-approximated before attempting the calibration on all of the joints. To do this, you can adjust the free params in three steps:
@@ -158,35 +153,56 @@ error_blocks:                           # Error blocks to be optimized
     position_scale: 0.1
     rotation_scale: 0.1
 ```
-## Create a launch file for the calibration node
-This file will load the two configuration files as rosparams and launch the *manual* robot calibration node. The launch file used for the example is in `launch/capture_checkerboards.launch`. 
+## Create the launch files
+This file will launch the **manual** capture_features node.
 
 ```xml
-<!-- Clear robot_calibration parameter -->
-<rosparam command="delete" param="robot_calibration" />
+<launch>
+  <arg name="rosbag_name" default="bagfiles/test.bag" />
 
-<!-- Launch the calibration -->
-<node pkg="robot_calibration" type="calibrate" name="robot_calibration"
-    args="--manual"
-    output="screen"
-    launch-prefix="gdb -ex run --args" >
-  <rosparam file="$(find ur5_calibration)/config/capture_checkerboards.yaml" command="load" />
-  <rosparam file="$(find ur5_calibration)/config/calibrate.yaml" command="load" />
-</node>
+  <rosparam command="delete" param="robot_calibration" />
+  <node pkg="robot_calibration" type="capture_features" name="capture_features"
+        output="screen" >
+    <rosparam file="$(find picknik_test_stand_kinematic_calibration)/config/capture_checkerboards.yaml" command="load" />
+    <param name="bag_filename" value="$(find picknik_test_stand_kinematic_calibration)/$(arg rosbag_name)" />
+  </node>
+  
+</launch>
+```
+
+```xml
+<launch>
+  <arg name="rosbag_name" default="bagfiles/test.bag" />
+  <arg name="verbose" default="true" />
+
+  <rosparam command="delete" param="robot_calibration" />
+  <node pkg="robot_calibration" type="optimize_parameters" name="robot_calibration"
+        output="screen" >
+    <rosparam file="$(find picknik_test_stand_kinematic_calibration)/config/calibrate.yaml" command="load" />
+    <param name="bag_filename" value="$(find picknik_test_stand_kinematic_calibration)/$(arg rosbag_name)" />
+    <param name="verbose" value="$(arg verbose)" />
+  </node>
+  
+</launch>
 ```
 
 ## Run the calibration
 1. Launch the environment which should include the arm, the camera, and the workspace obstacles:
 ```bash
-roslaunch ur5_calibration test_stand_bringup.launch simulate=false robot_ip:=xx.x.x.xxx
+roslaunch picknik_test_stand_bringup picknik_test_stand.launch simulate=false robot_ip:=xx.x.x.xxx
 ```
-2. In a separate terminal, launch the calibration node:
+2. In a separate terminal, launch the capture_features node:
 ```bash
-roslaunch ur5_calibration capture_checkerboards.launch
+roslaunch picknik_test_stand_kinematic_calibration capture_checkerboard.launch rosbag_name:=bagfiles/test.bag
 ```
 3. Follow the onscreen instructions. 
 
-The robot will need to be moved into a sufficient number of unique poses (where all joints are moved) to allow the calibration to converge. During data collection in manual mode, the operator will need to mannually adjust the arm and press `enter` once it's in position to capture the pose. Once complete with the operator selceted poses, type `done` into the console and the optimization will begin.
+4. In a separate terminal from the first, launch the optimize_parameters node:
+```bash
+roslaunch picknik_test_stand_kinematic_calibration optimize_parameters.launch rosbag_name:=bagfiles/test.bag
+```
+
+The robot will need to be moved into a sufficient number of unique poses (where all joints are moved) to allow the calibration to converge. During data collection in manual mode, the operator will need to mannually adjust the arm and press `enter` once it's in position to capture the pose. Once complete with the operator selceted poses, type `done` into the console and the calibration data will be stored in a rosbag at the location specified in the launch file.
 
 Saving the poses in the srdf to be played back with MoveIt is reccomended to allow for faster and more repeatable calibration in the event the solution does not converge and the calibration process needs to start over. There is not a way to regain poses after the optimization is started at the end of the data collection phase.
 

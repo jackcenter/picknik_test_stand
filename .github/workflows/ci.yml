@@ -8,6 +8,8 @@ jobs:
       matrix:
         env:
           - {ROS_DISTRO: melodic, ROS_REPO: main}
+      env:
+        UPSTREAM_WORKSPACE: upstream.repos
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1

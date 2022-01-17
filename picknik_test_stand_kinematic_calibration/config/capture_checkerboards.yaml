@@ -18,4 +18,4 @@ features:
     chain_sensor_name: arm    
     points_x: 6
     points_y: 4
-    square_size: 0.035
+    size: 0.035

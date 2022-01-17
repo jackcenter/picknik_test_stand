@@ -16,6 +16,7 @@ features:
     camera_info_topic: /camera/depth/camera_info
     camera_sensor_name: camera 
     chain_sensor_name: arm    
+    frame_id: checkerboard
     points_x: 6
     points_y: 4
-    size: 0.035
+    square_size: 0.035

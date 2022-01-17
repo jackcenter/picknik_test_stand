@@ -77,7 +77,7 @@ features:
     chain_sensor_name: arm                        # Chain with the checkerboard attached to the tip
     points_x: 6                                   # Number of inner edges on the calibration checkerboard (x cells minus 1)
     points_y: 4                                   # Number of inner edges on the calibration checkerboard (y celss minus 1)
-    square_size: 0.035                            # Edge length of a single checkerboard cell
+    size: 0.035                                   # Edge length of a single checkerboard cell
 ```
 
 ## Generate a configuration optimization configuration file

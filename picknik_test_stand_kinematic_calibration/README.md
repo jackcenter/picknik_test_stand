@@ -42,13 +42,14 @@ This should include launching the arm, the calibration camera publishing a Point
 ## Print a configuration checkerboard
 To generate a checkerboard, the [calib.io](https://calib.io/pages/camera-calibration-pattern-generator) pattern generator can be used (or any other pattern generator). The parameters used in this demonstration are:
 
-| Parameter | Value |
-| --- | --- |
-| Target Type | Checkerboard |
-| Board Width |  216 |
-| Board Height | 279 |
-| Rows | 5 |
-| Columns | 7 |
+| Parameter          | Value        |
+| ---                | ---          |
+| Target Type        | Checkerboard |
+| Board Width [mm]   | 279          |
+| Board Height [mm]  | 216          |
+| Rows               | 5            |
+| Columns            | 7            |
+| Checker Width [mm] | 30           |
 
 **Note:** the grid generated here is 5x7. The openCV checkerboard finder expects a paramter for the number of *inner edges* on the checkerboard which is 4x6 (5-1 x 7-1). and **not** the number of cells. This parameter is set in `config/capture_checkerboards.yaml` which will be created in the next step. The minimum number of inner edges the checkerboard finder needs is 3, which means the minimum dimension for either the rows or columns of the checkerboard is 4 (ie a 4x4 grid).
 

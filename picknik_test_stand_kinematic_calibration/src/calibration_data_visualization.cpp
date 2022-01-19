@@ -87,7 +87,7 @@ visualization_msgs::Marker PointPlotter::create_camera_marker_message(const geom
 {
     // TODO: adjust these parameters to make sense.
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "camera_color_optical_frame";
+    marker.header.frame_id = "camera_depth_optical_frame";
     marker.header.stamp = ros::Time();
     marker.ns = "camera_view";
     marker.id = id;

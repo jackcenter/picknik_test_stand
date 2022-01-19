@@ -1,12 +1,12 @@
 verbose: true
-base_link: bench_base_link
+base_link: tractor_base
 models:
   - name: arm            
     type: chain
     frame: wrist_3_link
   - name: camera
     type: camera3d        
-    frame: camera_color_optical_frame  
+    frame: camera_depth_optical_frame  
     topic: /camera/depth/color/points 
 free_frames:
   - name: checkerboard

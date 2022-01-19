@@ -19,4 +19,4 @@ features:
     frame_id: checkerboard
     points_x: 6
     points_y: 4
-    square_size: 0.035
+    square_size: 0.02

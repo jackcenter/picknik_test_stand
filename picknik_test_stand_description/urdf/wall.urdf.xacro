@@ -4,18 +4,23 @@
   <xacro:macro name="wall" params="
       prefix
       parent
+      width
+      dir
       mount_xyz
-      mount_rpy"
+      mount_rpy
+      color"
   >
 
     <!-- Constants -->
-    <xacro:property name="x_size" value="2.0" />
-    <xacro:property name="y_size" value="2.5" />
-    <xacro:property name="z_size" value="0.025" />
+    <xacro:property name="flip" value="${dir}" />
 
-    <xacro:property name="x_origin" value="0.0" />
-    <xacro:property name="y_origin" value="-1.25" />
-    <xacro:property name="z_origin" value="0.0125" />
+    <xacro:property name="x_size" value="${width}" />
+    <xacro:property name="y_size" value="0.025" />
+    <xacro:property name="z_size" value="2.5" />
+
+    <xacro:property name="x_origin" value="-${x_size / 2}" />
+    <xacro:property name="y_origin" value="${dir * y_size / 2}" />
+    <xacro:property name="z_origin" value="${z_size / 2}" />
 
     <link name="${prefix}base_link" >
       <visual>
@@ -23,7 +28,7 @@
           <box size="${x_size} ${y_size} ${z_size}" />
         </geometry>
         <origin xyz="${x_origin} ${y_origin} ${z_origin}" rpy="0.0 0.0 0.0" />
-        <material name="burgandy" />
+        <material name="${color}" />
       </visual>
       <collision>
         <geometry>

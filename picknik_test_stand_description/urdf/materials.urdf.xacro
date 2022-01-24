@@ -23,6 +23,10 @@
         <color rgba="0.3 0.3 0.3 0.8" />
     </material>
 
+    <material name="light_grey">
+        <color rgba="0.2 0.2 0.2 0.4" />
+    </material>
+
     <material name="silver">
       <color rgba="0.75 0.75 0.75 1.0" />
     </material>

@@ -14,7 +14,7 @@
     <xacro:include filename="$(find picknik_test_stand_description)/config/calibration_positions.srdf.xacro" />
 
 <!-- PARAMETERS -->
-    <xacro:property name="ur5_prefix" value="" />
+    <xacro:property name="ur5_prefix" value="ur5_" />
     <xacro:arg name="end_effector" default="none"/>
     <!-- Note: converting this to property so if statement can be used later, not sure of a better way to do this -->
     <xacro:property name="end_effector" value="$(arg end_effector)" />   
@@ -50,7 +50,7 @@
     <!-- <end_effector name="moveit_ee" parent_link="tool0" group="endeffector" /> -->
 
 <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
-    <virtual_joint name="fixed_base" type="fixed" parent_frame="world" child_link="tractor_base" />
+    <virtual_joint name="fixed_base" type="fixed" parent_frame="world" child_link="base_link" />
     
 <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="${ur5_prefix}base_link_inertia" link2="${ur5_prefix}shoulder_link" reason="Adjacent" />
@@ -66,9 +66,12 @@
     <disable_collisions link1="${ur5_prefix}wrist_2_link" link2="${ur5_prefix}wrist_3_link" reason="Adjacent" />
     <disable_collisions link1="${ur5_prefix}base_link_inertia" link2="bench_base_link" reason="Adjacent" />
     
-    <disable_collisions link1="bench_base_link" link2="wall0_base_link" reason="Adjacent" />
-    <disable_collisions link1="bench_base_link" link2="wall1_base_link" reason="Adjacent" />
-    <disable_collisions link1="wall0_base_link" link2="wall1_base_link" reason="Adjacent" />
+    <disable_collisions link1="bench_base_link" link2="west_wall_base_link" reason="Never" />
+    <disable_collisions link1="bench_base_link" link2="safety_wall_base_link" reason="Never" />
+    <disable_collisions link1="bench_base_link" link2="safety_wall_base_link" reason="Never" />
+    <disable_collisions link1="west_wall_base_link" link2="north_wall_base_link" reason="Adjacent" />
+    <disable_collisions link1="west_wall_base_link" link2="safety_wall_base_link" reason="Adjacent" />
+    <disable_collisions link1="north_wall_base_link" link2="safety_wall_base_link" reason="Never" />
     
     <!-- Mock grappler -->
     <xacro:if value="${end_effector == 'mock_grappler'}" >
@@ -79,6 +82,6 @@
     <!-- Calibration plate -->
     <xacro:if value="${end_effector == 'calibration_plate'}" >
         <disable_collisions link1="${ur5_prefix}wrist_3_link" link2="plate_base_link" reason="Adjacent" />
-        <xacro:calibration_positions /> 
+        <xacro:calibration_positions prefix="${ur5_prefix}"/> 
     </xacro:if> 
 </robot>

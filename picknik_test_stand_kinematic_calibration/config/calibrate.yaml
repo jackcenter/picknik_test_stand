@@ -1,20 +1,20 @@
 verbose: true
-base_link: tractor_base
+base_link: base_link
 models:
   - name: arm            
     type: chain
-    frame: wrist_3_link
+    frame: ur5_wrist_3_link
   - name: camera
     type: camera3d        
     frame: camera_color_optical_frame  
     topic: /camera/depth/color/points 
 free_params:
-  - shoulder_pan_joint
-  - shoulder_lift_joint
-  - elbow_joint
-  - wrist_1_joint
-  - wrist_2_joint
-  - wrist_3_joint
+  - ur5_shoulder_pan_joint
+  - ur5_shoulder_lift_joint
+  - ur5_elbow_joint
+  - ur5_wrist_1_joint
+  - ur5_wrist_2_joint
+  - ur5_wrist_3_joint
 free_frames:
   - name: camera_color_joint
     x: true
@@ -32,12 +32,12 @@ free_frames:
     yaw: true
 free_frames_initial_values:
  - name: checkerboard
-   x: 0.172357
-   y: -0.114575
-   z: -0.0130403
-   roll: -3.07854
-   pitch: 0.0277346
-   yaw: 3.13444
+   x: 0.150384
+   y: -0.125692
+   z: -0.0177028
+   roll: -3.13496
+   pitch: 0.000590985
+   yaw: -3.13496
 error_blocks:
  - name: hand_eye
    type: chain3d_to_chain3d

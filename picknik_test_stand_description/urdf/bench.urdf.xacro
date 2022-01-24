@@ -11,9 +11,9 @@
     <xacro:property name="y_size" value="0.62" />
     <xacro:property name="z_size" value="0.92" />
 
-    <xacro:property name="x_origin" value="-0.465" />
-    <xacro:property name="y_origin" value="-0.175" />
-    <xacro:property name="z_origin" value="0.46" />
+    <xacro:property name="x_origin" value="${x_size / 2}" />
+    <xacro:property name="y_origin" value="${y_size / 2}" />
+    <xacro:property name="z_origin" value="-${z_size / 2}" />
 
     <!-- Description -->
     <link name="${prefix}base_link" >
@@ -35,7 +35,7 @@
     <joint name="${parent}_to_${prefix}base_link" type="fixed" >
       <parent link="${parent}" />
       <child link="${prefix}base_link" />
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <origin xyz="0.0 0.0 ${z_size}" rpy="0.0 0.0 0.0" />
     </joint>
     
   </xacro:macro>

@@ -12,11 +12,28 @@
   <xacro:include filename="$(find picknik_test_stand_description)/urdf/calibration_plate.urdf.xacro" />
   
 <!-- Constants -->
-  <xacro:property name="arm_height" value="0.92" />
+  <xacro:property name="arm_mounting_position" value="1.05 .495 0.0" />
+  <xacro:property name="arm_mounting_orientation" value="0.0 0.0 0.0" />
+
+  <xacro:property name="west_wall_mounting_position" value="-0.184 -0.2 0.0" />
+  <xacro:property name="west_wall_mounting_orientation" value="0.0 0.0 3.1416" />
+  <xacro:property name="west_wall_width" value="4.5" />
+  <xacro:property name="west_wall_color" value="light_grey" />
+
+  <xacro:property name="north_wall_mounting_position" value="-0.184 -0.20 0.0" />
+  <xacro:property name="north_wall_mounting_orientation" value="0.0 0.0 -1.5708" />
+  <xacro:property name="north_wall_width" value="2.4" />
+  <xacro:property name="north_wall_color" value="light_grey" />
+
+  <xacro:property name="safety_wall_mounting_position" value="1.7 -0.20 0.0" />
+  <xacro:property name="safety_wall_mounting_orientation" value="0.0 0.0 -1.5708" />
+  <xacro:property name="safety_wall_width" value="2.4" />
+  <xacro:property name="safety_wall_color" value="burgandy" />
+
   <xacro:property name="camera_calibration_file" value="$(find picknik_test_stand_description)/config/camera_calibration.yaml" />
   <xacro:property name="camera_calibration" value="${load_yaml(camera_calibration_file)}" />
 
-  <xacro:property name="seg0_prefix" value="" />
+  <xacro:property name="arm_prefix" value="ur5_" />
 
 <!-- Parameters -->
   <xacro:arg name="joint_limit_params" default=""/>
@@ -42,18 +59,39 @@
   <xacro:materials />
 
   <!-- Create the simulated base link at the orgin of the scene -->
-  <link name="tractor_base" />
+  <link name="base_link" />
 
   <!-- Load the work bench and attach to the base link -->
-  <xacro:bench parent="tractor_base" prefix="bench_" />
+  <xacro:bench parent="base_link" prefix="bench_" />
   
   <!-- Load the imaginary safety wall and attach to the work bench -->
-  <xacro:wall parent="bench_base_link" prefix="wall0_" mount_xyz="0.0 -0.51 0.0" mount_rpy="-1.5708 0.0 0.0"/>
-  <xacro:wall parent="bench_base_link" prefix="wall1_" mount_xyz="0.5 0.0 0.0" mount_rpy="-1.5708 0.0 -1.5708"/>
+  <xacro:wall parent="base_link" prefix="west_wall_" 
+    width="${west_wall_width}" 
+    dir="1" 
+    mount_xyz="${west_wall_mounting_position}" 
+    mount_rpy="${west_wall_mounting_orientation}"
+    color="${west_wall_color}"
+    />
+
+  <xacro:wall parent="base_link" prefix="north_wall_" 
+    width="${north_wall_width}" 
+    dir="-1" 
+    mount_xyz="${north_wall_mounting_position}" 
+    mount_rpy="${north_wall_mounting_orientation}"
+    color="${north_wall_color}"
+    />
+
+  <xacro:wall parent="base_link" prefix="safety_wall_" 
+    width="${safety_wall_width}" 
+    dir="1" 
+    mount_xyz="${safety_wall_mounting_position}" 
+    mount_rpy="${safety_wall_mounting_orientation}"
+    color="${safety_wall_color}"
+    />
   
   <!-- Load the UR5 -->
   <xacro:ur5_robot 
-    prefix="${seg0_prefix}"
+    prefix="${arm_prefix}"
     joint_limits_parameters_file="$(arg joint_limit_params)"
     kinematics_parameters_file="$(arg kinematics_params)"
     physical_parameters_file="$(arg physical_params)"
@@ -66,14 +104,14 @@
   <!-- Attach the UR5 to the work bench -->
   <joint name="bench_to_ur5_robot" type="fixed" >
     <parent link="bench_base_link" />
-    <child link="${seg0_prefix}base_link" />
-    <origin xyz="0.0 0.0 ${arm_height}" rpy="0.0 0.0 0.0" />
+    <child link="${arm_prefix}base_link" />
+    <origin xyz="${arm_mounting_position}" rpy="${arm_mounting_orientation}" />
   </joint>
 
   <!-- Load the selected end effector -->
   <xacro:if value="${end_effector == 'mock_grappler'}" >
     <!-- Load the mock grappler and attach to the UR5 flange -->
-    <xacro:mock_grappler parent="${seg0_prefix}flange" prefix="grappler_" />
+    <xacro:mock_grappler parent="${arm_prefix}flange" prefix="grappler_" />
 
     <!-- Load a D415 RealSense camera and attach to mock grappler -->
     <xacro:sensor_d415 parent="grappler_base_link" use_nominal_extrinsics="true" use_mesh="true">
@@ -83,9 +121,9 @@
 
   <xacro:if value="${end_effector == 'calibration_plate'}" >
     <!-- Load the calibration plate and attach to the UR5 flange -->
-    <xacro:calibration_plate parent="${seg0_prefix}flange" prefix="plate_" />
+    <xacro:calibration_plate parent="${arm_prefix}flange" prefix="plate_" />
 
-    <xacro:sensor_l515 parent="bench_base_link" use_nominal_extrinsics="true" use_mesh="true">
+    <xacro:sensor_l515 parent="base_link" use_nominal_extrinsics="true" use_mesh="true">
       <origin xyz="${camera_calibration['calibration_camera']['xyz']}" rpy="${camera_calibration['calibration_camera']['rpy']}"/>
     </xacro:sensor_l515>
   </xacro:if>
